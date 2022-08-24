@@ -1,21 +1,26 @@
 package in.ashokit.planmicroservice.controller;
 
-import in.ashokit.planmicroservice.Constant.Constant;
+import in.ashokit.planmicroservice.Constant.PlanConstants;
 import in.ashokit.planmicroservice.entity.Plan;
+import in.ashokit.planmicroservice.properties.PlanProperties;
 import in.ashokit.planmicroservice.service.PlanService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/plan")
 public class PlanController {
 
-    @Autowired
     PlanService planService;
+    Map<String, String> planPropertiesMap;
+    PlanController(PlanService planService, PlanProperties planProperties) {
+        this.planService = planService;
+        this.planPropertiesMap = planProperties.getConstants();
+    }
 
     @PostMapping("/save")
     ResponseEntity<String> save(@RequestBody Plan plan) {
@@ -23,11 +28,11 @@ public class PlanController {
         HttpStatus httpStatus;
 
         if(planService.save(plan)) {
-            message = Constant.DATA_SAVED;
+            message = planPropertiesMap.get(PlanConstants.DATA_SAVED_SUCCESS);
             httpStatus = HttpStatus.CREATED;
         }
         else {
-            message = Constant.DATA_NOT_SAVED;
+            message = planPropertiesMap.get(PlanConstants.DATA_SAVED_FAILURE);
             httpStatus = HttpStatus.ACCEPTED;
         }
         return ResponseEntity.status(httpStatus).body(message);
@@ -50,11 +55,11 @@ public class PlanController {
         HttpStatus httpStatus;
 
         if(planService.update(plan)) {
-            message = Constant.DATA_UPDATED;
+            message = planPropertiesMap.get(PlanConstants.DATA_UPDATED_SUCCESS);
             httpStatus = HttpStatus.OK;
         }
         else {
-            message = Constant.DATA_NOT_UPDATED;
+            message = planPropertiesMap.get(PlanConstants.DATA_UPDATED_FAILURE);
             httpStatus = HttpStatus.NO_CONTENT;
         }
         return ResponseEntity.status(httpStatus).body(message);
@@ -66,11 +71,11 @@ public class PlanController {
         HttpStatus httpStatus;
 
         if(planService.delete(id)) {
-            message = Constant.DATA_DELETED;
+            message = planPropertiesMap.get(PlanConstants.DATA_DELETED_SUCCESS);
             httpStatus = HttpStatus.OK;
         }
         else {
-            message = Constant.DATA_NOT_DELETED;
+            message = planPropertiesMap.get(PlanConstants.DATA_DELETED_FAILURE);
             httpStatus = HttpStatus.NO_CONTENT;
         }
 
@@ -88,11 +93,11 @@ public class PlanController {
         HttpStatus httpStatus;
 
         if(planService.changeStatus(id, status)) {
-            message = Constant.STATUS_CHANGED;
+            message = planPropertiesMap.get(PlanConstants.STATUS_CHANGED_SUCCESS);
             httpStatus = HttpStatus.OK;
         }
         else {
-            message = Constant.STATUS_NOT_CHANGED;
+            message = planPropertiesMap.get(PlanConstants.STATUS_CHANGED_FAILURE);
             httpStatus = HttpStatus.ACCEPTED;
         }
         return ResponseEntity.status(httpStatus).body(message);

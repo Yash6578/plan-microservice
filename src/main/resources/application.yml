@@ -14,3 +14,21 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+
+plan-api:
+  constants:
+    dataSaveSuccess: Data saved successfully
+    dataSaveFailure: Error while saving data please try again
+
+    dataUpdateSuccess: Data updated successfully
+    dataUpdateFailure: Error while updating data please try again
+
+    dataDeleteSuccess: Data deleted successfully
+    dataDeleteFailure: Error while deleting data please try again
+
+    statusChangeSuccess: Status changed successfully
+    statusChangeFailure: Error while changing status please try again
+
+
+
